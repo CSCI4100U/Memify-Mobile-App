@@ -51,11 +51,11 @@ We will provide a detailed mockup of the user interface to illustrate the user e
 - A capture button for taking pictures.
 - Sharing options for social media and saving meme-enhanced images.
 
-![If image does not load, it can be found in proposal_files/welcome.png](proposal_files/welcome.png)
+![If image does not load, it can be found in proposal_files/welcome.png](proposal_files/Welcome.png)
 
 ![If image does not load, it can be found in proposal_files/login.png](proposal_files/login.png)
 
-![If image does not load, it can be found in proposal_files/signup.png](proposal_files/signup.png)
+![If image does not load, it can be found in proposal_files/signup.png](proposal_files/Signup.png)
 
 ![If image does not load, it can be found in proposal_files/home.png](proposal_files/home.png)
 
