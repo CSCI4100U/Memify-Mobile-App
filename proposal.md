@@ -37,7 +37,7 @@ Our project aims to develop a mobile application using Flutter, offering a uniqu
 
 Our code design will follow best practices and maintainable code structure. We will use UML diagrams to represent the system's architecture, class relationships, and component interactions. The design will encompass the frontend, backend, and database components.
 
-![Alt Text](proposal_files/uml.png)
+![If image does not load, it can be found in proposal_files/uml.png](proposal_files/uml.png)
 
 
 ## Mockup of User Interface (2.00 marks)
@@ -49,6 +49,17 @@ We will provide a detailed mockup of the user interface to illustrate the user e
 - A display area for the selected meme text overlay.
 - A capture button for taking pictures.
 - Sharing options for social media and saving meme-enhanced images.
+
+![If image does not load, it can be found in proposal_files/welcome.png](proposal_files/welcome.png)
+
+![If image does not load, it can be found in proposal_files/login.png](proposal_files/login.png)
+
+![If image does not load, it can be found in proposal_files/signup.png](proposal_files/signup.png)
+
+![If image does not load, it can be found in proposal_files/home.png](proposal_files/home.png)
+
+![If image does not load, it can be found in proposal_files/settings.png](proposal_files/settings.png)
+
 
 ## Writing Quality (1.00 mark)
 
