@@ -37,11 +37,8 @@ Our project aims to develop a mobile application using Flutter, offering a uniqu
 
 Our code design will follow best practices and maintainable code structure. We will use UML diagrams to represent the system's architecture, class relationships, and component interactions. The design will encompass the frontend, backend, and database components.
 
-<<<<<<< HEAD
-![If image does not load, it can be found in proposal_files/uml.png](proposal_files/uml.png)
-=======
 ![If image does not load, it can be found in proposal_files/uml.png](proposal_files/uml.PNG)
->>>>>>> e25454cd580025d16acc802f3fe61f585619bd7e
+
 
 
 ## Mockup of User Interface (2.00 marks)
