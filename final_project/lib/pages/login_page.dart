@@ -92,24 +92,22 @@ class Login extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 35),
-            Container(
-              width: 380,
-              height: 75,
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 230, 125, 14),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100.0),
-                    bottomLeft: Radius.circular(100.0),
-                    topRight: Radius.circular(100.0),
-                    bottomRight: Radius.circular(100.0),
-                  )),
-              child: const Center(
-                child: Text(
-                  'Login',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 22, 22, 22),
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
+            GestureDetector(
+              onTap: () => Navigator.pushNamed(context, '/main'),
+              child: Container(
+                width: 380,
+                height: 75,
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 230, 125, 14),
+                    borderRadius: BorderRadius.all(Radius.circular(100.0))),
+                child: const Center(
+                  child: Text(
+                    'Login',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 22, 22, 22),
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ),
