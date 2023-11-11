@@ -71,7 +71,7 @@ class _CamState extends State<Cam> {
   void startCamera(int direction) async {
     cameras = await availableCameras();
     if (cameras.length < 2) {
-      // device doesnt have both front and back camera
+      // device doesn't have both front and back cameras
       direction = 0;
     }
     cameraController = CameraController(
@@ -85,6 +85,17 @@ class _CamState extends State<Cam> {
     }).catchError((e) {
       print(e);
     });
+  }
+
+
+  Future<void> capturePhoto() async {
+    try {
+      final XFile photo = await cameraController.takePicture();
+      // Handle the captured photo (e.g., display it or save it to a location)
+      print("Photo taken: ${photo.path}");
+    } catch (e) {
+      print("Error capturing photo: $e");
+    }
   }
 
   @override
@@ -119,6 +130,14 @@ class _CamState extends State<Cam> {
                   color: Color.fromARGB(255, 230, 125, 14),
                   size: 35,
                 ),
+              ),
+            ),
+            // Add a "Take Photo" button
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                onPressed: capturePhoto,
+                child: Text("Take Photo"),
               ),
             ),
           ],
