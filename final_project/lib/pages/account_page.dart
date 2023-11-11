@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/firebase/auth.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});
@@ -62,7 +63,16 @@ class Account extends StatelessWidget {
           const SizedBox(height: 50),
           Center(
               child: GestureDetector(
-            onTap: () {
+            onTap: () async {
+              await Auth().signOut();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  'Signed Out',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 18),
+                ),
+                backgroundColor: Color.fromARGB(255, 230, 125, 14),
+              ));
               Navigator.pop(context);
               Navigator.pop(context);
             },

@@ -1,7 +1,32 @@
+import 'package:final_project/firebase/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  String? errorMessage = '';
+
+  final TextEditingController controllerEmail = TextEditingController();
+  final TextEditingController controllerPassword = TextEditingController();
+
+  Future<bool> logIn() async {
+    try {
+      await Auth().logInWithEmailAndPassword(
+          email: controllerEmail.text, password: controllerPassword.text);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +73,8 @@ class Login extends StatelessWidget {
                   bottomRight: Radius.circular(100.0),
                 ),
               ),
-              child: const TextField(
+              child: TextField(
+                controller: controllerEmail,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your email address',
@@ -81,7 +107,8 @@ class Login extends StatelessWidget {
                   bottomRight: Radius.circular(100.0),
                 ),
               ),
-              child: const TextField(
+              child: TextField(
+                controller: controllerPassword,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your password',
@@ -91,9 +118,26 @@ class Login extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
+            const SizedBox(height: 10),
+            Text(
+              errorMessage == '' ? '' : '$errorMessage',
+              style: TextStyle(color: Colors.red),
+            ),
             const SizedBox(height: 35),
             GestureDetector(
-              onTap: () => Navigator.pushNamed(context, '/main'),
+              onTap: () async {
+                if (await logIn() == true) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Logged in as ${controllerEmail.text}',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    backgroundColor: Color.fromARGB(255, 230, 125, 14),
+                  ));
+                  Navigator.pushNamed(context, '/main');
+                }
+              },
               child: Container(
                 width: 380,
                 height: 75,

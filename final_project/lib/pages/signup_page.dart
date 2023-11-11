@@ -1,7 +1,33 @@
+import 'package:final_project/firebase/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Signup extends StatelessWidget {
+class Signup extends StatefulWidget {
   const Signup({super.key});
+
+  @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+  String? errorMessage = '';
+
+  final TextEditingController controllerEmail = TextEditingController();
+  final TextEditingController controllerPassword = TextEditingController();
+  final TextEditingController controllerRePassword = TextEditingController();
+
+  Future<bool> signUp() async {
+    try {
+      await Auth().signUpWithEmailAndPassword(
+          email: controllerEmail.text, password: controllerPassword.text);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        errorMessage = e.message;
+      });
+      return false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +74,8 @@ class Signup extends StatelessWidget {
                   bottomRight: Radius.circular(100.0),
                 ),
               ),
-              child: const TextField(
+              child: TextField(
+                controller: controllerEmail,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your email address',
@@ -81,7 +108,8 @@ class Signup extends StatelessWidget {
                   bottomRight: Radius.circular(100.0),
                 ),
               ),
-              child: const TextField(
+              child: TextField(
+                controller: controllerPassword,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your password',
@@ -114,7 +142,8 @@ class Signup extends StatelessWidget {
                   bottomRight: Radius.circular(100.0),
                 ),
               ),
-              child: const TextField(
+              child: TextField(
+                controller: controllerRePassword,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Re-enter your password',
@@ -124,28 +153,52 @@ class Signup extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
+            const SizedBox(height: 10),
+            Text(
+              errorMessage == '' ? '' : '$errorMessage',
+              style: TextStyle(color: Colors.red),
+            ),
             const SizedBox(height: 75),
-            Container(
-              width: 380,
-              height: 75,
-              decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 230, 125, 14),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100.0),
-                    bottomLeft: Radius.circular(100.0),
-                    topRight: Radius.circular(100.0),
-                    bottomRight: Radius.circular(100.0),
-                  )),
-              child: const Center(
-                child: Text(
-                  'Sign Up',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 22, 22, 22),
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
+            GestureDetector(
+              onTap: () async {
+                if (controllerPassword.text != controllerRePassword.text) {
+                  setState(() {
+                    errorMessage = 'Please make sure passwords match';
+                  });
+                } else if (await signUp() == true) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Signed Up Successfully!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    backgroundColor: Color.fromARGB(255, 230, 125, 14),
+                  ));
+                  Navigator.pop(context);
+                }
+              },
+              child: Container(
+                width: 380,
+                height: 75,
+                decoration: const BoxDecoration(
+                    color: Color.fromARGB(255, 230, 125, 14),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(100.0),
+                      bottomLeft: Radius.circular(100.0),
+                      topRight: Radius.circular(100.0),
+                      bottomRight: Radius.circular(100.0),
+                    )),
+                child: const Center(
+                  child: Text(
+                    'Sign Up',
+                    style: TextStyle(
+                        color: Color.fromARGB(255, 22, 22, 22),
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
