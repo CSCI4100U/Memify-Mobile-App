@@ -22,30 +22,37 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: screens,
-      ),
+      body: screens[currentIndex],
+      extendBody: true,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Color.fromARGB(255, 230, 125, 14),
         unselectedItemColor: Colors.white,
-        backgroundColor: Color.fromARGB(255, 22, 22, 22),
+        backgroundColor: Color.fromARGB(200, 22, 22, 22),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              size: 27,
+            ),
             label: 'account',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.camera_alt),
+            icon: Icon(
+              Icons.camera_alt,
+              size: 27,
+            ),
             label: 'camera',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library),
+            icon: Icon(
+              Icons.photo_library,
+              size: 27,
+            ),
             label: 'gallery',
           )
         ],
@@ -72,6 +79,7 @@ class _CamState extends State<Cam> {
     startCamera(direction);
     super.initState();
   }
+
   Future<void> sharePhoto(String imagePath) async {
     final File imageFile = File(imagePath);
     if (await imageFile.exists()) {
@@ -81,9 +89,6 @@ class _CamState extends State<Cam> {
       print('The image file does not exist!');
     }
   }
-
-
-
 
   void startCamera(int direction) async {
     cameras = await availableCameras();
@@ -103,83 +108,73 @@ class _CamState extends State<Cam> {
       print(e);
     });
   }
+
   void showPhotoPreview(String imagePath, String memeText) {
     // Check for portrait mode
     var orientation = MediaQuery.of(context).orientation;
     if (orientation == Orientation.portrait) {
       showDialog(
         context: context,
-        builder: (context) =>
-            Dialog(
-              backgroundColor: Colors.transparent,
-              insetPadding: EdgeInsets.all(10),
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: <Widget>[
-                  // Image widget
-                  Container(
-                    width: double.infinity,
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.8,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      image: DecorationImage(
-                        image: FileImage(File(imagePath)),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+        builder: (context) => Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: EdgeInsets.all(10),
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: <Widget>[
+              // Image widget
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.8,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  image: DecorationImage(
+                    image: FileImage(File(imagePath)),
+                    fit: BoxFit.cover,
                   ),
-                  // Text overlay
-                  Positioned(
-                    bottom: 20,
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      color: Colors.black54,
-                      child: Text(
-                        memeText,
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.8 / 2 - 60, // Adjusted position
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        sharePhoto(imagePath); // Call sharePhoto method here
-                      },
-                      child: Icon(Icons.share, color: Colors.black),
-                      // Ensure icon color is visible
-                      backgroundColor: Colors.white, // Contrast with icon color
-                    ),
-                  ),
-                  Positioned(
-                    top: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.8 / 2 + 30,
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog
-                      },
-                      child: Icon(Icons.close, color: Colors.black),
-                      // Ensure icon color is visible
-                      backgroundColor: Colors.white, // Contrast with icon color
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              // Text overlay
+              Positioned(
+                bottom: 20,
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  color: Colors.black54,
+                  child: Text(
+                    memeText,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.8 / 2 -
+                    60, // Adjusted position
+                child: FloatingActionButton(
+                  onPressed: () {
+                    sharePhoto(imagePath); // Call sharePhoto method here
+                  },
+                  child: Icon(Icons.share, color: Colors.black),
+                  // Ensure icon color is visible
+                  backgroundColor: Colors.white, // Contrast with icon color
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.8 / 2 + 30,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Icon(Icons.close, color: Colors.black),
+                  // Ensure icon color is visible
+                  backgroundColor: Colors.white, // Contrast with icon color
+                ),
+              ),
+            ],
+          ),
+        ),
       );
     }
   }
-
-
 
   Future<void> capturePhoto() async {
     try {
@@ -215,7 +210,8 @@ class _CamState extends State<Cam> {
 
       // Use the ImageUtils class to draw text on the image
       File imageFile = File(photo.path);
-      File newImage = await ImageUtils.drawVerticalTextOnImage(imageFile, topText, bottomText);
+      File newImage = await ImageUtils.drawVerticalTextOnImage(
+          imageFile, topText, bottomText);
 
       // Now you can show the preview with the new image
       showPhotoPreview(newImage.path, memeText);
@@ -223,11 +219,6 @@ class _CamState extends State<Cam> {
       print("Error capturing photo: $e");
     }
   }
-
-
-
-
-
 
   @override
   void dispose() {
@@ -264,13 +255,30 @@ class _CamState extends State<Cam> {
               ),
             ),
             // Add a "Take Photo" button
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                onPressed: capturePhoto,
-                child: Text("Take Photo"),
-              ),
-            ),
+            Positioned(
+                bottom: 80,
+                left: MediaQuery.of(context).size.width / 2 - 40,
+                child: GestureDetector(
+                    onTap: () => capturePhoto(),
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.white54,
+                      ),
+                      child: Center(
+                          child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color.fromARGB(140, 255, 255, 255),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 230, 125, 14),
+                                width: 3)),
+                      )),
+                    )))
           ],
         ),
       );
