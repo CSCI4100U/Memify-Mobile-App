@@ -1,6 +1,7 @@
 import 'package:final_project/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '/database/login_db.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -127,6 +128,9 @@ class _LoginState extends State<Login> {
             GestureDetector(
               onTap: () async {
                 if (await logIn() == true) {
+                  await LoginDB().rememberAccount(
+                      email: controllerEmail.text,
+                      password: controllerPassword.text);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(
                       'Logged in as ${controllerEmail.text}',
