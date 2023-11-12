@@ -22,7 +22,7 @@ class _GalleryState extends State<Gallery> {
     if (await directory.exists()) {
       final List<FileSystemEntity> files = directory.listSync();
       final List<File> images = files
-          .where((file) => file is File && file.path.endsWith('.jpg'))
+          .where((file) => file is File && file.path.endsWith('.png'))
           .map((file) => File(file.path))
           .toList();
 
@@ -34,6 +34,41 @@ class _GalleryState extends State<Gallery> {
 
   Future<void> refreshGallery() async {
     await loadImages();
+  }
+  void showPhotoOptions(File imageFile) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.file(imageFile),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                TextButton.icon(
+                  icon: Icon(Icons.delete, color: Colors.white),
+                  label: Text('Delete', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    setState(() {
+                      imageFile.delete();
+                      imageFiles.remove(imageFile);
+                    });
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton.icon(
+                  icon: Icon(Icons.close, color: Colors.white),
+                  label: Text('Close', style: TextStyle(color: Colors.white)),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -52,7 +87,7 @@ class _GalleryState extends State<Gallery> {
       body: RefreshIndicator(
         onRefresh: refreshGallery,
         child: imageFiles.isEmpty
-            ? const Center(
+            ? Center(
           child: Text(
             'No images found.',
             style: TextStyle(color: Colors.white),
@@ -67,10 +102,12 @@ class _GalleryState extends State<Gallery> {
           itemCount: imageFiles.length,
           itemBuilder: (context, index) {
             File imageFile = imageFiles[index];
-            return Image.file(imageFile);
+              return GestureDetector(
+              onTap: () => showPhotoOptions(imageFile),
+              child: Image.file(imageFile),
+              );
           },
         ),
-
       ),
     );
   }
