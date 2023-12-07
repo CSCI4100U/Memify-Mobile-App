@@ -123,13 +123,15 @@ class _SettingsState extends State<Settings> {
                           const SizedBox(
                             width: 15,
                           ),
-                          Text(
-                            "$email",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 18),
-                            overflow: TextOverflow.clip,
+                          Flexible(
+                            child: Text(
+                              "$email",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 18),
+                              overflow: TextOverflow.clip,
+                            ),
                           ),
                           const SizedBox(
                             width: 50,
@@ -144,7 +146,8 @@ class _SettingsState extends State<Settings> {
                           width: 375,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: const Color.fromARGB(50, 255, 255, 255)),
+                                  color:
+                                      const Color.fromARGB(50, 255, 255, 255)),
                               borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20))),

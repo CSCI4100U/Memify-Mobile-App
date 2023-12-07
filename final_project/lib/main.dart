@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // if user does not have notifications disabled setting then initialize notifiications
-  if (await SettingsDB().isNotificationsDisabled(Auth().currentUser!.email) !=
+  if (await SettingsDB().isNotificationsDisabled(Auth().currentUser?.email) !=
       1) {
     await Noti().initNotifications();
   }
