@@ -1,7 +1,6 @@
 import 'package:final_project/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '/database/login_db.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -76,13 +75,13 @@ class _LoginState extends State<Login> {
               ),
               child: TextField(
                 controller: controllerEmail,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your email address',
                     hintStyle:
                         TextStyle(color: Color.fromARGB(175, 255, 255, 255)),
                     contentPadding: EdgeInsets.only(left: 22, top: 10)),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
             const SizedBox(height: 30),
@@ -110,34 +109,31 @@ class _LoginState extends State<Login> {
               ),
               child: TextField(
                 controller: controllerPassword,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your password',
                     hintStyle:
                         TextStyle(color: Color.fromARGB(175, 255, 255, 255)),
                     contentPadding: EdgeInsets.only(left: 22, top: 10)),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
             const SizedBox(height: 10),
-            Text(
+            Text( // display error message to user
               errorMessage == '' ? '' : '$errorMessage',
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
             const SizedBox(height: 35),
             GestureDetector(
               onTap: () async {
                 if (await logIn() == true) {
-                  await LoginDB().rememberAccount(
-                      email: controllerEmail.text,
-                      password: controllerPassword.text);
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(
                       'Logged in as ${controllerEmail.text}',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
-                    backgroundColor: Color.fromARGB(255, 230, 125, 14),
+                    backgroundColor: const Color.fromARGB(255, 230, 125, 14),
                   ));
                   Navigator.pushNamed(context, '/main');
                 }
@@ -159,20 +155,6 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ),
-            const SizedBox(height: 18),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  'Forgot your password?',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(width: 15)
-              ],
-            )
           ],
         ),
       ),

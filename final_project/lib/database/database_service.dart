@@ -1,8 +1,9 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'login_db.dart';
+import 'settings_db.dart';
 
 class DatabaseService {
+  // helper class to handle database for settings_db.dart
   Database? _database;
 
   Future<Database> get database async {
@@ -14,7 +15,7 @@ class DatabaseService {
   }
 
   Future<String> get fullPath async {
-    const name = 'accounts.db';
+    const name = 'settings.db';
     final path = await getDatabasesPath();
     return join(path, name);
   }
@@ -31,5 +32,5 @@ class DatabaseService {
   }
 
   Future<void> create(Database database, int versio) async =>
-      await LoginDB().createTable(database);
+      await SettingsDB().createTable(database);
 }

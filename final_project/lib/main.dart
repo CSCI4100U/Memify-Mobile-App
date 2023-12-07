@@ -2,24 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'firebase_options.dart';
+import 'firebase/firebase_options.dart';
 import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/main_page.dart';
-import 'database/login_db.dart';
+import 'database/settings_db.dart';
 import 'Firebase/auth.dart';
+import 'firebase/notification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // if user does not have notifications disabled setting then initialize notifiications
+  if (await SettingsDB().isNotificationsDisabled(Auth().currentUser!.email) !=
+      1) {
+    await Noti().initNotifications();
+  }
   // Lock the device orientation to portrait up and down before the app starts
-  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(MyApp());
+    runApp(const MyApp());
   });
 }
 
@@ -27,54 +32,50 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   Future<bool> hasAccount() async {
-    Map<String, String> emailAndPassword = await LoginDB().fetchAccount();
-
-    String email = emailAndPassword['email'] ?? '';
-    String password = emailAndPassword['password'] ?? '';
-
-    if (email == '' || password == '') {
-      return false;
-    } else {
-      try {
-        await Auth()
-            .logInWithEmailAndPassword(email: email, password: password);
-      } on FirebaseAuthException {
+    try {
+      User? user = Auth().currentUser;
+      if (await SettingsDB().isAutoLoginDisabled(user!.email!) == true) {
         return false;
       }
+
       return true;
+        } catch (e) {
+      return false;
     }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: FutureBuilder<bool>(
-        future: hasAccount(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // While the Future is still resolving, show a loading indicator or another widget
-            return Container(
-              // loading screen
-              color: Colors.black,
-              alignment: Alignment.center,
-              child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      Color.fromARGB(255, 230, 125, 14))),
-            );
-          } else if (snapshot.hasError) {
-            return const Home();
-          } else {
-            // if null then always false
-            final bool isLoggedIn = snapshot.data ?? false;
-            return isLoggedIn ? const Main() : const Home();
-          }
-        },
-      ),
-      routes: <String, WidgetBuilder>{
-        '/home': (context) => const Home(),
-        '/login': (context) => const Login(),
-        '/signup': (context) => const Signup(),
-        '/main': (context) => const Main()
+    return FutureBuilder<bool>(
+      future: hasAccount(),
+      builder: (context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Return a loading indicator or placeholder while waiting for the result.
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError || !snapshot.data!) {
+          // Handle errors or when hasAccount returns false.
+          return MaterialApp(
+            home: const Home(),
+            routes: <String, WidgetBuilder>{
+              '/home': (context) => const Home(),
+              '/login': (context) => const Login(),
+              '/signup': (context) => const Signup(),
+              '/main': (context) => const Main(),
+            },
+          );
+        } else {
+          // User has an account, navigate to the Main screen.
+          return MaterialApp(
+            home: const Main(),
+            routes: <String, WidgetBuilder>{
+              '/home': (context) => const Home(),
+              '/login': (context) => const Login(),
+              '/signup': (context) => const Signup(),
+              '/main': (context) => const Main(),
+            },
+          );
+        }
       },
     );
   }

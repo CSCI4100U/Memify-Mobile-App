@@ -48,8 +48,8 @@ class _GalleryState extends State<Gallery> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 TextButton.icon(
-                  icon: Icon(Icons.delete, color: Colors.white),
-                  label: Text('Delete', style: TextStyle(color: Colors.white)),
+                  icon: const Icon(Icons.delete, color: Colors.white),
+                  label: const Text('Delete', style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     setState(() {
                       imageFile.delete();
@@ -59,8 +59,8 @@ class _GalleryState extends State<Gallery> {
                   },
                 ),
                 TextButton.icon(
-                  icon: Icon(Icons.close, color: Colors.white),
-                  label: Text('Close', style: TextStyle(color: Colors.white)),
+                  icon: const Icon(Icons.close, color: Colors.white),
+                  label: const Text('Close', style: TextStyle(color: Colors.white)),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
@@ -87,7 +87,7 @@ class _GalleryState extends State<Gallery> {
       body: RefreshIndicator(
         onRefresh: refreshGallery,
         child: imageFiles.isEmpty
-            ? Center(
+            ? const Center(
           child: Text(
             'No images found.',
             style: TextStyle(color: Colors.white),

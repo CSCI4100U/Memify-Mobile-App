@@ -1,7 +1,7 @@
 // main_page.dart
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'account_page.dart';
+import 'settings_page.dart';
 import 'gallery_page.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io';
@@ -17,7 +17,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int currentIndex = 1;
-  final screens = [Account(), Cam(), Gallery()];
+  final screens = [const Settings(), const Cam(), const Gallery()];
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +26,9 @@ class _MainState extends State<Main> {
       extendBody: true,
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Color.fromARGB(255, 230, 125, 14),
+        selectedItemColor: const Color.fromARGB(255, 230, 125, 14),
         unselectedItemColor: Colors.white,
-        backgroundColor: Color.fromARGB(200, 22, 22, 22),
+        backgroundColor: const Color.fromARGB(200, 22, 22, 22),
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: currentIndex,
@@ -117,7 +117,7 @@ class _CamState extends State<Cam> {
         context: context,
         builder: (context) => Dialog(
           backgroundColor: Colors.transparent,
-          insetPadding: EdgeInsets.all(10),
+          insetPadding: const EdgeInsets.all(10),
           child: Stack(
             clipBehavior: Clip.none,
             alignment: Alignment.center,
@@ -138,11 +138,11 @@ class _CamState extends State<Cam> {
               Positioned(
                 bottom: 20,
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   color: Colors.black54,
                   child: Text(
                     memeText,
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
               ),
@@ -153,9 +153,9 @@ class _CamState extends State<Cam> {
                   onPressed: () {
                     sharePhoto(imagePath); // Call sharePhoto method here
                   },
-                  child: Icon(Icons.share, color: Colors.black),
                   // Ensure icon color is visible
-                  backgroundColor: Colors.white, // Contrast with icon color
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.share, color: Colors.black), // Contrast with icon color
                 ),
               ),
               Positioned(
@@ -164,9 +164,9 @@ class _CamState extends State<Cam> {
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the dialog
                   },
-                  child: Icon(Icons.close, color: Colors.black),
                   // Ensure icon color is visible
-                  backgroundColor: Colors.white, // Contrast with icon color
+                  backgroundColor: Colors.white,
+                  child: const Icon(Icons.close, color: Colors.black), // Contrast with icon color
                 ),
               ),
             ],
@@ -232,7 +232,7 @@ class _CamState extends State<Cam> {
       return Scaffold(
         body: Stack(
           children: [
-            Container(
+            SizedBox(
               height: double.infinity,
               width: double.infinity,
               child: CameraPreview(cameraController),
@@ -263,7 +263,7 @@ class _CamState extends State<Cam> {
                     child: Container(
                       width: 80,
                       height: 80,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.white54,
                       ),
@@ -273,9 +273,9 @@ class _CamState extends State<Cam> {
                         height: 70,
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color.fromARGB(140, 255, 255, 255),
+                            color: const Color.fromARGB(140, 255, 255, 255),
                             border: Border.all(
-                                color: Color.fromARGB(255, 230, 125, 14),
+                                color: const Color.fromARGB(255, 230, 125, 14),
                                 width: 3)),
                       )),
                     )))

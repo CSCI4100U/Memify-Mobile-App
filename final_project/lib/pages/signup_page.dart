@@ -1,6 +1,7 @@
 import 'package:final_project/firebase/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import "../database/settings_db.dart";
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -76,13 +77,13 @@ class _SignupState extends State<Signup> {
               ),
               child: TextField(
                 controller: controllerEmail,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your email address',
                     hintStyle:
                         TextStyle(color: Color.fromARGB(175, 255, 255, 255)),
                     contentPadding: EdgeInsets.only(left: 22, top: 10)),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
             const SizedBox(height: 30),
@@ -110,13 +111,13 @@ class _SignupState extends State<Signup> {
               ),
               child: TextField(
                 controller: controllerPassword,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Enter your password',
                     hintStyle:
                         TextStyle(color: Color.fromARGB(175, 255, 255, 255)),
                     contentPadding: EdgeInsets.only(left: 22, top: 10)),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
             const SizedBox(height: 30),
@@ -144,19 +145,20 @@ class _SignupState extends State<Signup> {
               ),
               child: TextField(
                 controller: controllerRePassword,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: InputBorder.none,
                     hintText: 'Re-enter your password',
                     hintStyle:
                         TextStyle(color: Color.fromARGB(175, 255, 255, 255)),
                     contentPadding: EdgeInsets.only(left: 22, top: 10)),
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
             const SizedBox(height: 10),
             Text(
+              // display error message to user
               errorMessage == '' ? '' : '$errorMessage',
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
             const SizedBox(height: 75),
             GestureDetector(
@@ -166,7 +168,13 @@ class _SignupState extends State<Signup> {
                     errorMessage = 'Please make sure passwords match';
                   });
                 } else if (await signUp() == true) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  SettingsDB().rememberSettings(
+                      email: controllerEmail.text,
+                      pfp:
+                          "https://soccerpointeclaire.com/wp-content/uploads/2021/06/default-profile-pic-e1513291410505.jpg",
+                      notifications: 0,
+                      autoLogin: 0);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text(
                       'Signed Up Successfully!',
                       textAlign: TextAlign.center,
